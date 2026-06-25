@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc17b36-4ca3-4bf7-bc0a-7d70de2a8948" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Keiki_TestTask_Svidlo.Ye/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Keiki_TestTask_Svidlo.Ye/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/MaskStamp.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/MaskStamp.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/TracingMechanic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/TracingMechanic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/CategoryController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menu/CategoryController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/HintController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/HintController.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/HomeButtonController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/HomeButtonController.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/LevelButtonController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menu/LevelButtonController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/MainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menu/MainMenuManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/MenuInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menu/MenuInstaller.cs" afterDir="false" />
-    </list>
+    <list default="true" id="1cc17b36-4ca3-4bf7-bc0a-7d70de2a8948" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +97,7 @@
       <updated>1782208234590</updated>
       <workItem from="1782208242968" duration="8275000" />
       <workItem from="1782298480419" duration="29259000" />
-      <workItem from="1782351249809" duration="892000" />
+      <workItem from="1782351249809" duration="1494000" />
     </task>
     <servers />
   </component>

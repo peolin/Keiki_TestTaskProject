@@ -1077,8 +1077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tracerObject: {fileID: 105411072}
   _maskStampPrefab: {fileID: 1344610878775417774, guid: 6e0f3dda7667e5844a8386748c2adfcf, type: 3}
-  _touchThreshold: 1
-  _stampIntervalDistance: 0.3
+  _touchThreshold: 0.6
+  _stampIntervalDistance: 0.15
   _autoGenerationDensity: 0.2
 --- !u!4 &1118401984
 Transform:
