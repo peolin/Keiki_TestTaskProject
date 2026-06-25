@@ -8,8 +8,11 @@ namespace Data
         [Header("Visuals")]
         public Sprite PathImage;
         public Color LevelColor;
+
+        [Header("Prefab Setup")]
+        public GameObject StrokeGuidesPrefab; 
     
-        [Header("Path")]
-        public StrokeData[] StrokePath;
+        [Header("Path Data for Logic")]
+        public StrokeData[] StrokePath; 
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470cc38292a19794dbcc24c2ae4c4ed5, type: 3}
+  m_Name: Shapes_CategoryConfig
+  m_EditorClassIdentifier: 
+  Category: 2
+  Levels:
+  - {fileID: 11400000, guid: b836c88648c651148b15907977b97fc6, type: 2}
+  - {fileID: 11400000, guid: dcc35cbee24b7294cbc5a45d39580ab0, type: 2}
+  - {fileID: 11400000, guid: 6b29ea250ef44e84692c5379cdfd3967, type: 2}
+  - {fileID: 11400000, guid: e3cf7a4e80dde334ca0e712365658152, type: 2}
+  - {fileID: 11400000, guid: bbcc019da175bcb43861c43945ca9d99, type: 2}
+  - {fileID: 11400000, guid: a00e631d54d9da94aa9dbf988fc570f7, type: 2}
+  - {fileID: 11400000, guid: eb0806074cd84144db15b0339f6ae47c, type: 2}
