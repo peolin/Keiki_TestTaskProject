@@ -17,8 +17,6 @@ public class HintController : MonoBehaviour
     private float _idleTimer = 0f;
     private bool _hasPlayedVoiceHint = false;
     private Coroutine _fingerAnimationCoroutine;
-    
-    public event Action<CategoryType> OnInstructionRequested;
 
     [Inject]
     public void Construct(TracingMechanic tracingMechanic, AudioManager audioManager, CategoryType categoryType)
@@ -31,9 +29,8 @@ public class HintController : MonoBehaviour
     private void Start()
     {
         _hintFingerObject.SetActive(false);
-
         _tracingMechanic.OnPlayerActivity += ResetIdleTimer;
-
+        
         TriggerVoiceInstruction();
     }
 
@@ -68,7 +65,10 @@ public class HintController : MonoBehaviour
 
     private void TriggerVoiceInstruction()
     {
-        OnInstructionRequested?.Invoke(_currentCategory);
+        if (_audioManager is not null)
+        {
+            _audioManager.PlayInstruction(_currentCategory);
+        }
     }
 
     private IEnumerator AnimateHintFingerRoutine()

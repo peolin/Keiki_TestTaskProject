@@ -8,5 +8,7 @@ public class MenuInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.BindInstance(_mainMenuManager).AsSingle();
+        
+        Container.Bind<GameSceneLauncher>().AsSingle();
     }
 }

@@ -10,12 +10,12 @@ public class MainMenuManager : MonoBehaviour
     [Header("UI Rows")]
     [SerializeField] private CategoryRowController[] _categoryRows;
 
-    private ZenjectSceneLoader _sceneLoader;
+    private GameSceneLauncher _sceneLauncher;
 
     [Inject]
-    public void Construct(ZenjectSceneLoader sceneLoader)
+    public void Construct(GameSceneLauncher sceneLauncher)
     {
-        _sceneLoader = sceneLoader;
+        _sceneLauncher = sceneLauncher;
     }
 
     private void Start()
@@ -29,24 +29,16 @@ public class MainMenuManager : MonoBehaviour
         
         for (int i = 0; i < rowsToInit; i++)
         {
-            _categoryRows[i].InitializeRow(_categories[i], OnLevelSelected);
+            if (_categoryRows[i] != null && _categories[i] != null)
+            {
+                _categoryRows[i].InitializeRow(_categories[i], OnLevelSelected);
+            }
         }
     }
 
     private void OnLevelSelected(CategoryConfig category, LevelConfig level)
     {
-        if (category == null || level == null)
-        {
-            Debug.LogError("Не вдалося завантажити рівень: Категорія або Конфіг рівня є null!");
-            return;
-        }
-        
-        Debug.Log($"Loading Gameplay for Category: {category.Category}, Level: {level.name}");
-        
-        _sceneLoader.LoadScene("Game", UnityEngine.SceneManagement.LoadSceneMode.Single, container =>
-        {
-            container.BindInstance(category).AsSingle();
-            container.BindInstance(level).AsSingle();
-        });
+        if (category == null || level == null) return;
+        _sceneLauncher.LaunchGame(category, level);
     }
 }

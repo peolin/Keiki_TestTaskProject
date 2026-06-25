@@ -11,16 +11,16 @@ public class TracingMechanic : MonoBehaviour
     
     [Header("Tracing Mask Stamp Parameters")]
     [SerializeField] private GameObject _maskStampPrefab;
-    [SerializeField] private float _touchThreshold = 1f;
-    [SerializeField] private float _stampIntervalDistance = 0.3f;
-    [SerializeField] private float _autoGenerationDensity = 0.5f;
+    [SerializeField] private float _touchThreshold = 0.6f;
+    [SerializeField] private float _stampIntervalDistance = 0.15f;
+    [SerializeField] private float _autoGenerationDensity = 0.2f;
     
     private Transform _tracerTransform;
     private Camera _mainCamera;
     private LevelManager _levelManager;
     
     private List<Vector2> _calculatedPathPoints = new List <Vector2>();
-    private int _targetPointIndex = 0;
+    private int _targetPointIndex = 1;
     private bool _isTracingActive = false;
     private Vector3 _lastStampPosition;
 
@@ -87,10 +87,10 @@ public class TracingMechanic : MonoBehaviour
 
         if (touch.phase == TouchPhase.Began)
         {
-            if (Vector2.Distance(worldPos, _calculatedPathPoints[0]) <= _touchThreshold)
+            Vector2 activeStartPoint = _calculatedPathPoints[_targetPointIndex - 1];
+            if (Vector2.Distance(worldPos, activeStartPoint) <= _touchThreshold)
             {
                 _isTracingActive = true;
-                _targetPointIndex = 1;
                 _tracerObject.SetActive(true);
                 _tracerTransform.position = _calculatedPathPoints[0];
                 _lastStampPosition = _tracerTransform.position;
@@ -98,7 +98,7 @@ public class TracingMechanic : MonoBehaviour
                 SpawnMaskStamp();
             }
         }
-        else if ((touch.phase == TouchPhase.Moved) && _isTracingActive)
+        else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && _isTracingActive)
         {
             UpdateTracing(worldPos);
         }
@@ -110,6 +110,8 @@ public class TracingMechanic : MonoBehaviour
     
     private void UpdateTracing(Vector3 touchPosition)
     {
+        if (_targetPointIndex >= _calculatedPathPoints.Count) return;
+        
         Vector2 currentTarget = _calculatedPathPoints[_targetPointIndex];
         Vector2 previousTarget = _calculatedPathPoints[_targetPointIndex - 1];
         
@@ -198,6 +200,9 @@ public class TracingMechanic : MonoBehaviour
 
     public Vector3 GetCurrentTargetPosition()
     {
+        if (_targetPointIndex >= _calculatedPathPoints.Count) 
+            return _calculatedPathPoints[_calculatedPathPoints.Count - 1];
+        
         return _calculatedPathPoints[_targetPointIndex];
     }
     #endregion

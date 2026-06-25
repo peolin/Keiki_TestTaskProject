@@ -14,5 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PathImage: {fileID: -4552502784455746728, guid: 0e17f8f852fb6494c9d0d4b1b7a4e7b4, type: 3}
   LevelColor: {r: 0.40784317, g: 0.21568629, b: 0.59607846, a: 1}
-  StrokeGuidesPrefab: {fileID: 0}
-  StrokePath: []
+  StrokeGuidesPrefab: {fileID: 5046726132501170838, guid: c976699a92fc7914980eb4677b535ace, type: 3}
+  StrokePath:
+  - Waypoints:
+    - {x: -0.85, y: 1}
+    - {x: 0.85, y: 2.5}
+  - Waypoints:
+    - {x: 0.85, y: 1}
+    - {x: 0.85, y: -2.6}

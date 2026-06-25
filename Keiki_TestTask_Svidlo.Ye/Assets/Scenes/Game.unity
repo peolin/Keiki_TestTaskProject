@@ -462,6 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1802032706}
   _categoryManager: {fileID: 162199601}
+  _tracingMechanic: {fileID: 0}
   _hintController: {fileID: 879719009}
   _audioManager: {fileID: 1839888507}
 --- !u!1 &394268426
@@ -1076,8 +1077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tracerObject: {fileID: 105411072}
   _maskStampPrefab: {fileID: 1344610878775417774, guid: 6e0f3dda7667e5844a8386748c2adfcf, type: 3}
-  _touchThreshold: 0.6
-  _stampIntervalDistance: 0.15
+  _touchThreshold: 1
+  _stampIntervalDistance: 0.3
   _autoGenerationDensity: 0.2
 --- !u!4 &1118401984
 Transform:

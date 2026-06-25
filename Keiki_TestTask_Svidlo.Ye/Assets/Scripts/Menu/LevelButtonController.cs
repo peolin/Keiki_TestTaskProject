@@ -9,7 +9,8 @@ public class LevelButtonController : MonoBehaviour
     [SerializeField] private Image _iconImage;
     
     private Button _button;
-    private LevelConfig _myLevelConfig;
+    private LevelConfig _levelConfig;
+    
     private Action<LevelConfig> _onClickCallback;
 
     private void Awake()
@@ -20,21 +21,21 @@ public class LevelButtonController : MonoBehaviour
 
     public void InitializeButton(LevelConfig config, Action<LevelConfig> onClickCallback)
     {
-        _myLevelConfig = config;
+        _levelConfig = config;
         _onClickCallback = onClickCallback;
         
-        if (_iconImage != null && _myLevelConfig.PathImage != null)
+        if (_iconImage != null && _levelConfig.PathImage != null)
         {
-            _iconImage.sprite = _myLevelConfig.PathImage;
-            _iconImage.color = _myLevelConfig.LevelColor;
+            _iconImage.sprite = _levelConfig.PathImage;
+            _iconImage.color = _levelConfig.LevelColor;
         }
     }
 
     private void HandleClick()
     {
-        if (_myLevelConfig != null)
+        if (_levelConfig != null)
         {
-            _onClickCallback?.Invoke(_myLevelConfig);
+            _onClickCallback?.Invoke(_levelConfig);
         }
     }
 
