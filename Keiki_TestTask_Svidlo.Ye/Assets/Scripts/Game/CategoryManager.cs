@@ -41,7 +41,7 @@ public class CategoryManager : MonoBehaviour
         }
     }
 
-    public void MoveToNextLevel()
+    private void MoveToNextLevel()
     {
         _currentLevelIndex++;
 
@@ -65,7 +65,7 @@ public class CategoryManager : MonoBehaviour
         _levelManager.InitializeLevel(_currentLevelConfig);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (_levelManager != null)
         {

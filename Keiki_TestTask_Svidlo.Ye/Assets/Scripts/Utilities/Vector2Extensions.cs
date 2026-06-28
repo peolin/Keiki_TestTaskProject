@@ -5,7 +5,7 @@ namespace Utilities
     public static class Vector2Extensions
     {
         // extend Vector2 to check if a point is on a vector
-        public static Vector2 Slide(Vector2 p, Vector2 a, Vector2 b)
+        public static Vector2 ProjectOnSegment(Vector2 p, Vector2 a, Vector2 b)
         {
             Vector2 ab = b - a;
             Vector2 ap = p - a;

@@ -30,6 +30,7 @@ public class TracingMechanic : MonoBehaviour
     public void Construct(LevelManager levelManager)
     {
         _levelManager = levelManager;
+        _levelManager.OnLevelInitialized += OnLevelInitialized;
     }
 
     private void Start()
@@ -37,14 +38,22 @@ public class TracingMechanic : MonoBehaviour
         _tracerTransform = _tracerObject.transform;
         _mainCamera = Camera.main;
         _tracerObject.SetActive(false);
-        
-        PrepareStrokePoints();
     }
     
     private void Update()
     {
         HandleInput();
     }
+    
+    private void OnDestroy()
+    {
+        if (_levelManager != null)
+        {
+            _levelManager.OnLevelInitialized -= OnLevelInitialized;
+        }
+    }
+    
+    private void OnLevelInitialized(LevelConfig config) => PrepareStrokePoints();
 
     private void PrepareStrokePoints()
     {
@@ -82,8 +91,6 @@ public class TracingMechanic : MonoBehaviour
         
         Vector3 worldPos = _mainCamera.ScreenToWorldPoint(touch.position);
         worldPos.z = 0f; 
-        
-        OnPlayerActivity?.Invoke();
 
         if (touch.phase == TouchPhase.Began)
         {
@@ -97,6 +104,8 @@ public class TracingMechanic : MonoBehaviour
                 
                 SpawnMaskStamp();
             }
+            
+            OnPlayerActivity?.Invoke();
         }
         else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && _isTracingActive)
         {
@@ -117,7 +126,7 @@ public class TracingMechanic : MonoBehaviour
         
         if (IsOnPathStroke(touchPosition, previousTarget, currentTarget))
         {
-            Vector2 projectedPos = Vector2Extensions.Slide(touchPosition, previousTarget, currentTarget);
+            Vector2 projectedPos = Vector2Extensions.ProjectOnSegment(touchPosition, previousTarget, currentTarget);
             _tracerTransform.position = new Vector3(projectedPos.x, projectedPos.y, 0f);
 
             TrySpawnStamp();
@@ -141,7 +150,7 @@ public class TracingMechanic : MonoBehaviour
     #region Private Helper Methods
     private bool IsOnPathStroke(Vector3 position, Vector2 start, Vector2 end)
     {
-        Vector2 projection = Vector2Extensions.Slide(position, start, end);
+        Vector2 projection = Vector2Extensions.ProjectOnSegment(position, start, end);
         return Vector2.Distance(position, projection) <= _touchThreshold;
     }
 

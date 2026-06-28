@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1802032706}
   _categoryManager: {fileID: 162199601}
-  _tracingMechanic: {fileID: 0}
+  _tracingMechanic: {fileID: 1118401983}
   _hintController: {fileID: 879719009}
   _audioManager: {fileID: 1839888507}
 --- !u!1 &394268426
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 1118401984}
   - component: {fileID: 1118401983}
   m_Layer: 0
-  m_Name: TracingController
+  m_Name: TracingMechanic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

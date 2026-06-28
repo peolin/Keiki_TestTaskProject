@@ -13,17 +13,24 @@ public class HintController : MonoBehaviour
     private TracingMechanic _tracingMechanic;
     private AudioManager _audioManager;
     private CategoryType _currentCategory;
+    private LevelManager _levelManager;
     
-    private float _idleTimer = 0f;
-    private bool _hasPlayedVoiceHint = false;
+    private float _idleTimer;
+    private bool _hasPlayedVoiceHint;
     private Coroutine _fingerAnimationCoroutine;
 
     [Inject]
-    public void Construct(TracingMechanic tracingMechanic, AudioManager audioManager, CategoryType categoryType)
+    public void Construct(TracingMechanic tracingMechanic, AudioManager audioManager, 
+                            CategoryType categoryType, LevelManager levelManager)
     {
         _tracingMechanic = tracingMechanic;
         _audioManager = audioManager;
         _currentCategory = categoryType;
+        
+        levelManager.OnLevelInitialized += OnLevelChanged;
+        levelManager.OnLevelInitialized += OnLevelChanged;
+        
+        _levelManager = levelManager;
     }
 
     private void Start()
@@ -48,6 +55,11 @@ public class HintController : MonoBehaviour
         {
             _fingerAnimationCoroutine = StartCoroutine(AnimateHintFingerRoutine());
         }
+    }
+    
+    private void OnLevelCompleted()
+    {
+        _audioManager.PlayCompletion();
     }
 
     private void ResetIdleTimer()
@@ -96,11 +108,17 @@ public class HintController : MonoBehaviour
         }
     }
 
+    private void OnLevelChanged(LevelConfig _)
+    {
+        ResetIdleTimer();
+        TriggerVoiceInstruction();
+    }
+    
     private void OnDestroy()
     {
-        if (_tracingMechanic != null)
-        {
-            _tracingMechanic.OnPlayerActivity -= ResetIdleTimer;
-        }
+        _tracingMechanic.OnPlayerActivity -= ResetIdleTimer;
+        
+        _levelManager.OnLevelCompleted -= OnLevelCompleted;
+        _levelManager.OnLevelInitialized -= OnLevelChanged;
     }
 }

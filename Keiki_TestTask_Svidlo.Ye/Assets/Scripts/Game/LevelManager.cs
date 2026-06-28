@@ -9,10 +9,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private SpriteRenderer _pathColorImageRenderer;
     [SerializeField] private Transform _strokeGuideContainer;
 
+    public event Action<LevelConfig> OnLevelInitialized;
     public event Action OnLevelCompleted;
     
     private LevelConfig _currentLevelConfig;
-    private int _currentStrokeIndex = 0;
+    private int _currentStrokeIndex;
     private GameObject _currentGuidePath;
 
     public void InitializeLevel(LevelConfig config)
@@ -21,6 +22,7 @@ public class LevelManager : MonoBehaviour
         _currentStrokeIndex = 0;
         
         PrepareLevel();
+        OnLevelInitialized?.Invoke(config);
     }
 
     private void PrepareLevel()
@@ -60,6 +62,7 @@ public class LevelManager : MonoBehaviour
 
     public StrokeData GetCurrentStrokeData()
     {
+        if (_currentLevelConfig == null) return default;
         return _currentLevelConfig.StrokePath[_currentStrokeIndex];
     }
 

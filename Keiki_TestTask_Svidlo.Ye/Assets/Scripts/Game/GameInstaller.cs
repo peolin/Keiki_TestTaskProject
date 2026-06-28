@@ -18,7 +18,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInstance(_hintController).AsSingle();
         Container.BindInstance(_audioManager).AsSingle();
         
-        CategoryConfig transitConfig = Container.Resolve<CategoryConfig>();
-        Container.Bind<CategoryType>().FromInstance(transitConfig.Category).AsSingle();
+        Container.Bind<CategoryType>()
+            .FromMethod(ctx => ctx.Container.Resolve<CategoryConfig>().Category).AsSingle();
     }
 }

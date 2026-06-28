@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private CategoryConfig[] _categories;
 
     [Header("UI Rows")]
-    [SerializeField] private CategoryRowController[] _categoryRows;
+    [SerializeField] private CategoryController[] _categoryRows;
 
     private GameSceneLauncher _sceneLauncher;
 

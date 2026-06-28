@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using Data;
 
-public class CategoryRowController : MonoBehaviour
+public class CategoryController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _categoryTitleText;
     [SerializeField] private LevelButtonController[] _levelButtons;
