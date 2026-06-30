@@ -7,26 +7,31 @@ public class CategoryManager : MonoBehaviour
     private CategoryConfig _categoryConfig;
     private LevelConfig _currentLevelConfig;
     private LevelManager _levelManager;
-    private int _currentLevelIndex = 0;
+    private int _currentLevelIndex;
 
     [Inject]
     public void Construct(CategoryConfig category, LevelConfig level, LevelManager levelManager)
     {
         _categoryConfig = category;
-        _currentLevelConfig = level;
-        _levelManager = levelManager;
+
+        if (level is null)
+        {
+            _currentLevelConfig = category.Levels[0];
+            _currentLevelIndex = 0;
+        }
+        else
+        {
+            _currentLevelConfig = level;
+            DetermineInitialIndex();
+        }
         
+        _levelManager = levelManager;
         _levelManager.OnLevelCompleted += MoveToNextLevel;
     }
 
     private void Start()
     {
-        DetermineInitialIndex();
-        
-        if (_currentLevelConfig != null)
-        {
-            _levelManager.InitializeLevel(_currentLevelConfig);
-        }
+        _levelManager.InitializeLevel(_currentLevelConfig);
     }
 
     private void DetermineInitialIndex()

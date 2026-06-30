@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
 using Data;
 
 public class LevelManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class LevelManager : MonoBehaviour
         _currentStrokeIndex = 0;
         
         PrepareLevel();
+        
         OnLevelInitialized?.Invoke(config);
     }
 
@@ -55,6 +57,7 @@ public class LevelManager : MonoBehaviour
             var spriteRenderers = strokeTransform.GetComponentsInChildren<SpriteRenderer>(true);
             foreach (var sr in spriteRenderers)
             {
+                sr.DOFade(1f, 1f);
                 sr.enabled = (i == _currentStrokeIndex);
             }
         }
@@ -62,13 +65,13 @@ public class LevelManager : MonoBehaviour
 
     public StrokeData GetCurrentStrokeData()
     {
-        if (_currentLevelConfig == null) return default;
+        if (_currentLevelConfig is null) return default;
         return _currentLevelConfig.StrokePath[_currentStrokeIndex];
     }
 
     public Transform GetStrokeContainer()
     {
-        if (_currentGuidePath == null) return _strokeGuideContainer;
+        if (_currentGuidePath is null) return _strokeGuideContainer;
         return _currentGuidePath.transform.GetChild(_currentStrokeIndex);
     }
 

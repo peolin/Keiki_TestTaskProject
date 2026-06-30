@@ -11,9 +11,9 @@ public class TracingMechanic : MonoBehaviour
     
     [Header("Tracing Mask Stamp Parameters")]
     [SerializeField] private GameObject _maskStampPrefab;
-    [SerializeField] private float _touchThreshold = 0.6f;
-    [SerializeField] private float _stampIntervalDistance = 0.15f;
-    [SerializeField] private float _autoGenerationDensity = 0.2f;
+    [SerializeField] private float _touchThreshold = 1.2f;
+    [SerializeField] private float _stampIntervalDistance = 0.2f;
+    [SerializeField] private float _autoGenerationDensity = 0.1f;
     
     private Transform _tracerTransform;
     private Camera _mainCamera;
