@@ -7,32 +7,50 @@ public class MainMenuManager : MonoBehaviour
     [Header("Data Configurations")]
     [SerializeField] private CategoryConfig[] _categories;
 
-    [Header("UI Rows")]
-    [SerializeField] private CategoryController[] _categoryRows;
+    [Header("Dynamic UI Prefab")] 
+    [SerializeField] private CategoryController _categoryRowPrefab;
+    [SerializeField] private Transform _categoriesContainer;
 
     private GameSceneLauncher _sceneLauncher;
+    private DiContainer _diContainer;
 
     [Inject]
-    public void Construct(GameSceneLauncher sceneLauncher)
+    public void Construct(GameSceneLauncher sceneLauncher, DiContainer diContainer)
     {
         _sceneLauncher = sceneLauncher;
+        _diContainer = diContainer;
     }
 
     private void Start()
     {
+        //ClearContainer();
+        
         InitializeMenu();
     }
 
+    /*private void ClearContainer()
+    {
+        foreach (Transform child in _categoriesContainer)
+        {
+            Destroy(child.GameObject);
+        }
+    }*/
+
     private void InitializeMenu()
     {
-        int rowsToInit = Mathf.Min(_categories.Length, _categoryRows.Length);
-        
-        for (int i = 0; i < rowsToInit; i++)
+        if (_categories == null || _categoryRowPrefab == null || _categoriesContainer == null) return;
+
+
+        foreach (var category in _categories)
         {
-            if (_categoryRows[i] != null && _categories[i] != null)
-            {
-                _categoryRows[i].InitializeRow(_categories[i], OnLevelSelected);
-            }
+            if (category is null) continue;
+            
+            CategoryController rowInstance = _diContainer.InstantiatePrefabForComponent<CategoryController>(
+                _categoryRowPrefab, 
+                _categoriesContainer
+            );
+            
+            rowInstance.InitializeRow(category, OnLevelSelected, _diContainer);
         }
     }
 
