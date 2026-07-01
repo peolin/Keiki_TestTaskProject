@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297aca010455cb94e9d741d522bb6173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hintFingerObject: {fileID: 8924378198164383761, guid: ff686bedcc1e5654ea0d070c12f2ef2c, type: 3}
+  _hintGuideVisual: {fileID: 8924378198164383761, guid: ff686bedcc1e5654ea0d070c12f2ef2c, type: 3}
   _fingerSpeed: 3
 --- !u!4 &879719010
 Transform:
@@ -1101,9 +1101,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tracerObject: {fileID: 105411072}
   _maskStampPrefab: {fileID: 1344610878775417774, guid: 6e0f3dda7667e5844a8386748c2adfcf, type: 3}
-  _touchThreshold: 0.6
-  _stampIntervalDistance: 0.15
-  _autoGenerationDensity: 0.2
+  _touchThreshold: 1.2
+  _stampIntervalDistance: 0.2
+  _autoGenerationDensity: 0.1
 --- !u!4 &1118401984
 Transform:
   m_ObjectHideFlags: 0

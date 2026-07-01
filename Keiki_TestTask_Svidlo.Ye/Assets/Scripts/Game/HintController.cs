@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -7,7 +6,7 @@ using Data;
 public class HintController : MonoBehaviour
 {
     [Header("Hint Visuals")]
-    [SerializeField] private GameObject _hintFingerObject;
+    [SerializeField] private GameObject _hintGuideVisual;
     [SerializeField] private float _fingerSpeed = 3f;
 
     private TracingMechanic _tracingMechanic;
@@ -17,6 +16,7 @@ public class HintController : MonoBehaviour
     
     private float _idleTimer;
     private bool _hasPlayedVoiceHint;
+    private bool _canShowVisualHint = false;
     private Coroutine _fingerAnimationCoroutine;
 
     [Inject]
@@ -26,40 +26,39 @@ public class HintController : MonoBehaviour
         _tracingMechanic = tracingMechanic;
         _audioManager = audioManager;
         _currentCategory = categoryType;
-        
-        levelManager.OnLevelInitialized += OnLevelChanged;
-        levelManager.OnLevelInitialized += OnLevelChanged;
-        
         _levelManager = levelManager;
+        
+        _levelManager.OnLevelInitialized += OnLevelChanged;
+        _levelManager.OnLevelReadyForHint += EnableHintsDirectly;
     }
 
     private void Start()
     {
-        _hintFingerObject.SetActive(false);
+        _hintGuideVisual.SetActive(false);
         _tracingMechanic.OnPlayerActivity += ResetIdleTimer;
         
-        TriggerVoiceInstruction();
+        TriggerInitialVoiceInstruction();
     }
 
     private void Update()
     {
+        if (!_canShowVisualHint) return;
+        
         _idleTimer += Time.deltaTime;
         
         if (_idleTimer >= 7f && !_hasPlayedVoiceHint)
         {
-            TriggerVoiceInstruction();
             _hasPlayedVoiceHint = true;
+            if (_audioManager is not null)
+            {
+                TriggerInitialVoiceInstruction();
+            }
         }
 
         if (_idleTimer >= 14f && _fingerAnimationCoroutine == null)
         {
-            _fingerAnimationCoroutine = StartCoroutine(AnimateHintFingerRoutine());
+            _fingerAnimationCoroutine = StartCoroutine(AnimateVisualHintRoutine());
         }
-    }
-    
-    private void OnLevelCompleted()
-    {
-        _audioManager.PlayCompletion();
     }
 
     private void ResetIdleTimer()
@@ -72,38 +71,45 @@ public class HintController : MonoBehaviour
             StopCoroutine(_fingerAnimationCoroutine);
             _fingerAnimationCoroutine = null;
         }
-        _hintFingerObject.SetActive(false);
+        _hintGuideVisual.SetActive(false);
     }
-
-    private void TriggerVoiceInstruction()
+    
+    private void TriggerInitialVoiceInstruction()
     {
+        _canShowVisualHint = false; 
+        
         if (_audioManager is not null)
         {
             _audioManager.PlayInstruction(_currentCategory);
         }
     }
-
-    private IEnumerator AnimateHintFingerRoutine()
+    
+    private void EnableHintsDirectly()
     {
-        _hintFingerObject.SetActive(true);
+        _canShowVisualHint = true;
+        ResetIdleTimer();
+    }
+
+    private IEnumerator AnimateVisualHintRoutine()
+    {
+        _hintGuideVisual.SetActive(true);
 
         while (true)
         {
             Vector3 startPos = _tracingMechanic.GetCurrentTracerPosition();
             Vector3 targetPos = _tracingMechanic.GetCurrentTargetPosition();
 
-            _hintFingerObject.transform.position = startPos;
+            _hintGuideVisual.transform.position = startPos;
 
-            while (Vector3.Distance(_hintFingerObject.transform.position, targetPos) > 0.05f)
+            while (Vector3.Distance(_hintGuideVisual.transform.position, targetPos) > 0.1f)
             {
-                _hintFingerObject.transform.position = Vector3.MoveTowards(
-                    _hintFingerObject.transform.position, 
-                    targetPos, 
+                _hintGuideVisual.transform.position = Vector3.MoveTowards(
+                    _hintGuideVisual.transform.position, 
+                    targetPos,
                     _fingerSpeed * Time.deltaTime
                 );
                 yield return null;
             }
-            
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -111,14 +117,30 @@ public class HintController : MonoBehaviour
     private void OnLevelChanged(LevelConfig _)
     {
         ResetIdleTimer();
-        TriggerVoiceInstruction();
+        TriggerInitialVoiceInstruction();
+        
+        _audioManager.OnInstructionAudioFinished += HandleInitialAudioFinished;
+    }
+
+    private void HandleInitialAudioFinished()
+    {
+        _canShowVisualHint = true;
+        _audioManager.OnInstructionAudioFinished -= HandleInitialAudioFinished;
+        
+        ResetIdleTimer();
     }
     
     private void OnDestroy()
     {
-        _tracingMechanic.OnPlayerActivity -= ResetIdleTimer;
-        
-        _levelManager.OnLevelCompleted -= OnLevelCompleted;
-        _levelManager.OnLevelInitialized -= OnLevelChanged;
+        if (_tracingMechanic is not null) _tracingMechanic.OnPlayerActivity -= ResetIdleTimer;
+        if (_levelManager is not null)
+        {
+            _levelManager.OnLevelInitialized -= OnLevelChanged;
+            _levelManager.OnLevelReadyForHint -= EnableHintsDirectly;
+        }
+        if (_audioManager is not null)
+        {
+            _audioManager.OnInstructionAudioFinished -= HandleInitialAudioFinished;
+        }
     }
 }

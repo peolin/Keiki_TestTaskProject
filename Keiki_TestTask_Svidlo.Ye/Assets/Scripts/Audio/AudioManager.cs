@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using Data;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
@@ -13,6 +16,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] _levelCompletionClip;
 
     private AudioSource _voiceOverSource;
+    private Coroutine _audioTrackingCoroutine;
+    
+    public event Action OnInstructionAudioFinished;
 
     private void Awake()
     {
@@ -27,19 +33,19 @@ public class AudioManager : MonoBehaviour
         switch (categoryType)
         {
             case CategoryType.Letters:
-                if (_letterCategoryInstructionClip != null)
+                if (_letterCategoryInstructionClip is not null)
                 {
                     clipToPlay = _letterCategoryInstructionClip;
                 }
                 break;
             case CategoryType.Numbers:
-                if (_numberCategoryInstructionClip != null)
+                if (_numberCategoryInstructionClip is not null)
                 {
                     clipToPlay = _numberCategoryInstructionClip;
                 }
                 break;            
             case CategoryType.Shapes:
-                if (_shapesCategoryInstructionClip != null)
+                if (_shapesCategoryInstructionClip is not null)
                 {
                     clipToPlay = _shapesCategoryInstructionClip;
                 }
@@ -49,7 +55,22 @@ public class AudioManager : MonoBehaviour
         if (clipToPlay is not null)
         {
             _voiceOverSource.PlayOneShot(clipToPlay);
+            
+            if (_audioTrackingCoroutine != null) StopCoroutine(_audioTrackingCoroutine);
+            _audioTrackingCoroutine = StartCoroutine(TrackAudioClipDuration(clipToPlay.length));
         }
+        else
+        {
+            OnInstructionAudioFinished?.Invoke();
+        }
+    }
+    
+    private IEnumerator TrackAudioClipDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        
+        OnInstructionAudioFinished?.Invoke();
+        _audioTrackingCoroutine = null;
     }
 
     public void PlayCompletion()

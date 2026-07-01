@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 using DG.Tweening;
 using Data;
 
@@ -10,20 +11,31 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private SpriteRenderer _pathColorImageRenderer;
     [SerializeField] private Transform _strokeGuideContainer;
 
-    public event Action<LevelConfig> OnLevelInitialized;
+    public event Action<LevelConfig> OnLevelInitialized; 
     public event Action OnLevelCompleted;
+    public event Action OnLevelReadyForHint;
     
     private LevelConfig _currentLevelConfig;
     private int _currentStrokeIndex;
     private GameObject _currentGuidePath;
+    
+    private AudioManager _audioManager;
+    private bool _guidesAreRevealed;
 
+    [Inject]
+    public void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+        _audioManager.OnInstructionAudioFinished += HandleInstructionAudioFinished;
+    }
+    
     public void InitializeLevel(LevelConfig config)
     {
         _currentLevelConfig = config;
         _currentStrokeIndex = 0;
+        _guidesAreRevealed = false;
         
         PrepareLevel();
-        
         OnLevelInitialized?.Invoke(config);
     }
 
@@ -45,6 +57,19 @@ public class LevelManager : MonoBehaviour
         
         UpdateVisualGuides();
     }
+    
+    private void HandleInstructionAudioFinished()
+    {
+        if (!_guidesAreRevealed)
+        {
+            _guidesAreRevealed = true;
+            UpdateVisualGuides();
+        }
+        else
+        {
+            OnLevelReadyForHint?.Invoke();
+        }
+    }
 
     private void UpdateVisualGuides()
     {
@@ -57,6 +82,7 @@ public class LevelManager : MonoBehaviour
             var spriteRenderers = strokeTransform.GetComponentsInChildren<SpriteRenderer>(true);
             foreach (var sr in spriteRenderers)
             {
+                sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0f);
                 sr.DOFade(1f, 1f);
                 sr.enabled = (i == _currentStrokeIndex);
             }
@@ -85,7 +111,16 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            _audioManager.PlayCompletion();
             OnLevelCompleted?.Invoke();
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        if (_audioManager is not null)
+        {
+            _audioManager.OnInstructionAudioFinished -= HandleInstructionAudioFinished;
         }
     }
 }
